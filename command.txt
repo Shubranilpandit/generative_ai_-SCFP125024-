@@ -1,0 +1,8 @@
+1. To Create Python environment
+python -m venv myenv
+
+2. To activate environment
+.\myenv\Scripts\activate
+
+3. To install python Libray
+pip install (libname)

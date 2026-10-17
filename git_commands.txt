@@ -1,0 +1,59 @@
+1.git status
+(This shows your branch, staged files, unstaged changes and untracked files.)
+
+2.git remote -v
+(This shows the remote repositories configured for this local folder.)
+
+3.git branch -vv
+(This shows your local branches and whether they track a remote branch.)
+
+4.git log -5 --oneline --decorate
+(This lists up to five recent commits without changing anything.)
+
+5.git rev-parse --show-toplevel
+(This tells us which folder Git considers the main repository.)
+
+6.git rev-parse --show-prefix
+(Check your position inside that repository)
+
+7.git ls-files -- .env myvenv
+(This checks whether the parent repository currently tracks either of those paths. 
+If it prints a path, that file is tracked by the parent repository; 
+if it prints nothing, neither is tracked under those exact paths.)
+
+8.git init -b main
+(Creates a new local Git repository in this folder and names its branch main. 
+It does not delete your files or the parent repository's commits.)
+
+9.git add -A
+(git add -A stages the changes within this new repository. It does not stage changes outside this folder.)
+
+10.git commit -m "Message"
+(It creates a commit message)
+
+11.git remote add origin "Git Repo Link"
+(Connecting to Git repository)
+
+12.git push -u origin main
+(This uploads your new commit to GitHub and configures your local main branch to track origin/main. 
+GitHub may ask you to authenticate in your browser.)
+
+13.git fetch origin
+(This downloads remote branch and commit information without changing your working files or merging anything into your branch.)
+
+14.git log --oneline --graph --decorate --all
+(Compare both histories)
+
+15.git branch -r
+(Shows all remote branches)
+
+16.git merge origin/main --allow-unrelated-histories --no-edit
+(Merges the remote main branch into your local main branch.
+The --allow-unrelated-histories option is necessary because the two branches have no common history.)
+
+17.git reset --mixed origin/main
+(Resets your local main branch to match the remote main branch,
+but keeps your working files and staged changes intact.)
+
+18.
+
