@@ -2,4 +2,4 @@
 myvenv/
 .venv/
 __pycache__/
-git_commands/
+git_commands.txt
