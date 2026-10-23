@@ -17,6 +17,7 @@ The primary objective of this laboratory assignment is to develop an in-depth, h
 - Analyzing hardware bottlenecks (RAM, GPU VRAM, memory bandwidth, KV cache, and quantization).
 - Running local open-source models with Ollama and comparing with remote API inference.
 - Investigating generation parameters (Temperature sampling) and building conversational chatbots.
+- Customizing assistant personas using system instructions and role conditioning.
 
 ---
 
@@ -68,7 +69,7 @@ pip install -r "Lab 1\requirements.txt"
 ```
 
 ### 3.3 Environment Configuration (`.env`)
-Copy `.env.example` to `.env` if using API providers for upcoming activities:
+Copy `.env.example` to `.env` if using API providers:
 
 ```powershell
 cp "Lab 1\.env.example" "Lab 1\.env"
@@ -78,7 +79,7 @@ cp "Lab 1\.env.example" "Lab 1\.env"
 
 ---
 
-## 4. How to Run Activities (Phase 3: Activities 1 to 4)
+## 4. How to Run All 10 Activities
 
 ### Activity 1 — Explore LLM Models on Hugging Face
 Inspects three verified Hugging Face models across size tiers:
@@ -149,6 +150,36 @@ Synthesizes a structured comparison matrix across 8 core dimensions:
 python "Lab 1\activity7.py"
 ```
 
+### Activity 8 — Temperature Experiment
+Evaluates the Softmax temperature sampling hyperparameter across values `0.1`, `0.7`, and `1.0`:
+- Uses a consistent model and prompt to isolate the effect of sampling probability flattening.
+- Observes high predictability/determinism at $T=0.1$ versus creative diversity at $T=1.0$.
+- Explains the mathematical formula $P(w_i) = \frac{\exp(z_i / T)}{\sum_j \exp(z_j / T)}$ and confirms that temperature modifies token selection, not stored model knowledge.
+
+```powershell
+python "Lab 1\activity8.py"
+```
+
+### Activity 9 — Build a Mini Chatbot
+Builds a multi-turn conversational chatbot maintaining message history across turns:
+- Explains why LLMs are inherently stateless ($y = f(x)$) without client-side context tracking.
+- Demonstrates what happens when history is dropped (instant conversational amnesia).
+- Supports interactive CLI conversation with clean `/exit` handling and automated test demonstration.
+
+```powershell
+python "Lab 1\activity9.py"
+```
+
+### Activity 10 — Customize the Chatbot (AI/ML Tutor)
+Conditions the conversational assistant using a persistent `system` instruction:
+- Establishes 'Professor Ada'—an encouraging, pedagogically structured AI/ML tutor.
+- Formats explanations into Intuition/Analogy, Technical Mechanism, and Key Takeaway, concluding with a Socratic check question.
+- Explains in-context steering vs. model retraining, and discusses jailbreak vulnerabilities and context budgets.
+
+```powershell
+python "Lab 1\activity10.py"
+```
+
 ---
 
 ## 5. Google Colab GPU Instructions (for Activity 3)
@@ -174,7 +205,8 @@ To execute `activity3.py` on a cloud GPU:
 | `ModuleNotFoundError: No module named 'transformers'` | Package not yet installed in active Python environment. | Run `pip install transformers` inside your activated virtual environment. |
 | `CUDA out of memory` | Model weights and KV cache exceed GPU VRAM. | Use a smaller model, lower batch size, or apply 4-bit quantization (e.g. bitsandbytes / GGUF). |
 | `torch.cuda.is_available() returns False` | Running on a machine without an NVIDIA GPU or running CPU PyTorch build. | Normal on integrated Intel graphics. For GPU testing, run `activity3.py` in Google Colab. |
-| `RateLimitError` on Hugging Face API | Anonymous API requests to HF Hub exceeded. | Normal; the scripts gracefully fall back to verified offline metadata. |
+| `RateLimitError` on API provider | Free-tier request or token quotas exceeded. | Wait 60 seconds for the quota window to reset, or reduce `max_tokens`. |
+| `ConnectionError` on Ollama | Ollama background daemon is inactive. | Start Ollama from the Windows Start Menu or run `ollama serve`. |
 
 ---
 
@@ -195,3 +227,9 @@ To execute `activity3.py` on a cloud GPU:
 
 4. **Why LLMs Are Memory-Bandwidth Bound:**  
    During autoregressive token generation, the model must read all its parameters from memory to generate a single token. Therefore, GPU VRAM ($500 - 1000+\text{ GB/s}$) generates tokens 10x to 50x faster than standard CPU RAM ($40 - 80\text{ GB/s}$).
+
+5. **Temperature Decoding Mechanics:**  
+   Temperature is a Softmax scaling factor: $P(w_i) = \frac{\exp(z_i / T)}{\sum_j \exp(z_j / T)}$. Low temperature sharpens the distribution toward the most likely token (greedy); high temperature flattens it, allowing more varied, exploratory tokens. It never alters the model's stored weights or knowledge.
+
+6. **Statelessness and System Prompting:**  
+   LLMs have no internal memory between API requests. Multi-turn chat is achieved by re-sending conversation history. System prompts provide behavioral conditioning and persona constraints by occupying the primary attention span of the model without requiring fine-tuning.
