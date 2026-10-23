@@ -1,0 +1,31 @@
+# Environment and secrets
+.env
+*.env
+.env.*
+!.env.example
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+myenv/
+env/
+
+# Model checkpoints and downloaded weights
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.onnx
+*.gguf
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
